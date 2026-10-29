@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registro Cuccimix</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="logo">C</span> Registro Cuccimix</div>
+    <div class="user" id="userBox" hidden>
+      <span id="userEmail"></span>
+      <button class="btn ghost" id="logoutBtn">Sair</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Aviso de configuração -->
+    <section id="configView" class="card narrow" hidden>
+      <h1>Configuração pendente</h1>
+      <p>Preencha <code>SUPABASE_URL</code> e <code>SUPABASE_ANON_KEY</code> no arquivo <code>config.js</code>.</p>
+    </section>
+
+    <!-- Login -->
+    <section id="loginView" class="card narrow" hidden>
+      <h1>Entrar</h1>
+      <form id="loginForm">
+        <label>E-mail <input type="email" name="email" required autocomplete="username"></label>
+        <label>Senha <input type="password" name="password" required autocomplete="current-password"></label>
+        <button class="btn primary" type="submit">Entrar</button>
+      </form>
+      <button class="link" id="forgotBtn">Esqueci minha senha</button>
+      <p class="hint">Acesso apenas para usuários convidados pelo administrador.</p>
+    </section>
+
+    <!-- Definir senha (convite / recuperação) -->
+    <section id="passwordView" class="card narrow" hidden>
+      <h1>Definir nova senha</h1>
+      <form id="passwordForm">
+        <label>Nova senha <input type="password" name="password" required minlength="8" autocomplete="new-password"></label>
+        <label>Confirmar senha <input type="password" name="confirm" required minlength="8" autocomplete="new-password"></label>
+        <button class="btn primary" type="submit">Salvar senha</button>
+      </form>
+    </section>
+
+    <!-- App -->
+    <section id="appView" hidden>
+      <div class="toolbar">
+        <input type="search" id="search" placeholder="Buscar por cliente, modelo, chef, receita…">
+        <button class="btn ghost" id="exportBtn">Exportar CSV</button>
+        <button class="btn primary" id="newBtn">+ Novo registro</button>
+      </div>
+      <p class="count" id="count"></p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th><th>Cliente</th><th>Modelo</th><th>Chef</th>
+              <th>Receita/Evento</th><th>Método de Cocção</th><th>Tempo</th><th>Registrado por</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <p class="empty" id="empty" hidden>Nenhum registro encontrado.</p>
+    </section>
+  </main>
+
+  <!-- Formulário de registro -->
+  <dialog id="recordDialog">
+    <form id="recordForm" method="dialog">
+      <h2 id="dialogTitle">Novo registro</h2>
+      <div class="grid">
+        <label>Data <input type="date" name="data" required></label>
+        <label>Cliente <input name="cliente" required list="dl-cliente"></label>
+        <label>Modelo <input name="modelo" required list="dl-modelo"></label>
+        <label>Chef <input name="chef" required list="dl-chef"></label>
+        <label class="full">Receita/Evento <input name="receita_evento" required></label>
+        <label>Método de Cocção <input name="metodo_coccao" required list="dl-metodo_coccao"></label>
+        <label>Tempo <input name="tempo" required placeholder="ex.: 45 min"></label>
+      </div>
+      <datalist id="dl-cliente"></datalist>
+      <datalist id="dl-modelo"></datalist>
+      <datalist id="dl-chef"></datalist>
+      <datalist id="dl-metodo_coccao"></datalist>
+      <div class="actions">
+        <button class="btn ghost" type="button" id="cancelBtn">Cancelar</button>
+        <button class="btn primary" type="submit">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
