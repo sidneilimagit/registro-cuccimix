@@ -50,14 +50,24 @@
     loadRecords();
   }
 
+  // Modo teste: campos opcionais; "Entrar" com campos vazios usa a conta de teste.
+  const teste = cfg.TESTE_LOGIN;
+  if (teste) {
+    const f = $("loginForm");
+    f.email.required = f.password.required = false;
+    f.email.placeholder = "(modo teste: deixe vazio)";
+    f.password.placeholder = "(modo teste: deixe vazio)";
+  }
+
   $("loginForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const f = e.target;
+    const useTeste = teste && !f.email.value.trim() && !f.password.value;
     const btn = f.querySelector("button");
     btn.disabled = true;
     const { error } = await sb.auth.signInWithPassword({
-      email: f.email.value.trim(),
-      password: f.password.value,
+      email: useTeste ? teste.email : f.email.value.trim(),
+      password: useTeste ? teste.senha : f.password.value,
     });
     btn.disabled = false;
     if (error) toast("E-mail ou senha inválidos.", true);
