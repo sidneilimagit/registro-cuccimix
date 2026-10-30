@@ -32,6 +32,10 @@ create trigger registros_before_update
   before update on public.registros
   for each row execute function public.registros_before_update();
 
+-- Expõe a tabela à API apenas para usuários logados.
+revoke all on public.registros from anon;
+grant select, insert, update, delete on public.registros to authenticated;
+
 -- Row Level Security: só usuários logados acessam;
 -- todos veem todos os registros, mas só editam/excluem os próprios.
 alter table public.registros enable row level security;
